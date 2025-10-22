@@ -1,10 +1,10 @@
 #!/bin/bash
 
 : '
-	Utility to Expose Local Device Port to Internet
+	Utility to Expose Local TCP Port to Internet
 	
 	Author	: 	Viki ( a ) V Natarajan
-	Contact	:	viki.design
+	Contact	:	https://viki.design
 '
 
 REMOTE_IP=""

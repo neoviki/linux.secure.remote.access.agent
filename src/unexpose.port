@@ -1,3 +1,12 @@
+#!/bin/bash
+
+: '
+	Utility to Expose Local TCP Port to Internet
+	
+	Author	: 	Viki ( a ) V Natarajan
+	Contact	:	https://viki.design
+'
+
 if [ -z "$1" ]; then
     echo "[ usage ] ./unexpose_port <port_number>"
     exit 1
