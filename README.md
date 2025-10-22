@@ -159,7 +159,7 @@ MIT License
 
 ---
 
-## Note on Naming
+## Note on Project and Application Naming Convention
 
 I use **dot-separated names** for projects and applications (e.g., `linux.remote.access.agent`) to make each project’s purpose immediately clear. Having developed over 40 projects, many of which I use regularly in development or at work, this naming system helps me **quickly use the application without forgetting its name**, and **easily track, remember, and understand what each project does** without opening it, keeping everything intuitive.
 
