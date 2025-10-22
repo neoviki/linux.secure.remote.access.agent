@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# secure.remote.access.agent
+# Usage:
+#   ./secure.remote.access.agent start <args_for_expose_port>
+#   ./secure.remote.access.agent stop <args_for_unexpose_port>
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 {start|stop} [args...]"
+    exit 1
+fi
+
+# extract command and shift to pass the rest of the args
+COMMAND=$1
+shift
+
+case "$COMMAND" in
+    start)
+        ./expose.port "$@"
+        ;;
+    stop)
+        ./unexpose.port "$@"
+        ;;
+    *)
+        echo "Unknown command: $COMMAND"
+        echo "Usage: $0 {start|stop} [args...]"
+        exit 1
+        ;;
+esac
+
