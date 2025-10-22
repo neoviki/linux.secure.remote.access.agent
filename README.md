@@ -82,7 +82,7 @@ ssh local_user@test.domain.com -p 2022
 ### Example - Stop Remote Access
 
 ```bash
-secure.remote.access.agent stop 2022 gw_user@test.domain.com
+secure.remote.access.agent stop 2022 
 ```
 
 ---
