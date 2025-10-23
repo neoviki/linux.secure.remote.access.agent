@@ -1,28 +1,39 @@
-# Secure Remote Access Agent
+# TCP Port Tunneler
 
-**Secure Remote Access Agent** is a utility to enable or disable secure remote access to your Linux machine using SSH reverse tunneling. It allows your local machine to be accessed by any remote user on the Internet through a public gateway server.
+**TCP Port Tunneler** is a utility to start or stop TCP port tunneling using SSH reverse connections.
+It allows you to make any local TCP port accessible over the internet through a remote gateway server with a public IP.
 
-### Example Scenario
+### Example Application Scenarios
 
-* **Local Machine (A)** – Your local Linux machine.
-* **Public Server (M)** – Gateway server with a public IP and SSH access.
-* **Remote User   (B)** – Can connect to Local Machine A via Public Server M once the agent is started.
+1. To share or expose your **local web server** so that it can be accessed by any user on the Internet.
+2. To share your **local SSH port**, allowing remote users to connect securely to your computer via SSH.
+3. To expose a **local database or API service** temporarily for external testing or integration.
+4. To provide **remote access to IoT devices or home servers** behind NAT or firewalls without changing router settings.
+
+### How It Works
+
+* **Local Machine (A)** – The machine hosting the service (for example, a web server on port 8080 or SSH on port 22).
+* **Public Server (M)** – A gateway server with a public IP address and SSH access, used as the intermediary.
+* **Remote User (B)** – A user who connects to the service running on Local Machine (A) through the Public Server (M) once the tunnel is established.
 
 ```
+
 Remote User (B) --> Public Server (M) --> Local Machine (A)
-```
 
-This shows the main function of this agent: Local Machine (A) is made temporarily accessible over the internet via a secure SSH reverse tunnel, controlled with `start` and `stop` commands.
+````
+
+This illustrates the main function of this agent: **Local Machine (A)** becomes temporarily accessible over the Internet via a secure SSH reverse tunnel, controlled with `start` and `stop` commands.
+
 
 ---
 
 ## Features
 
-* Enable (`start`) or disable (`stop`) remote access on-demand.
+* Start or stop TCP tunneling on-demand.
 * Uses SSH reverse tunneling under the hood.
-* Runs securely without permanently exposing your local machine.
-* Can be integrated with your Linux apps or CLI tools.
-* Works with a jump server / gateway with a public IP.
+* Expose any local TCP port securely.
+* Simple CLI interface — ideal for automation or integration.
+* Works with any gateway server that has a public IP.
 
 ---
 
@@ -33,7 +44,7 @@ This shows the main function of this agent: Local Machine (A) is made temporaril
 ```bash
 git clone <repo-url>
 cd <repo-folder>
-```
+````
 
 2. Make the installer executable:
 
@@ -47,7 +58,7 @@ chmod +x installer.sh
 ./installer.sh
 ```
 
-This will install the application on your Linux machine.
+This installs the utility on your Linux machine.
 
 ---
 
@@ -56,40 +67,54 @@ This will install the application on your Linux machine.
 ### Syntax
 
 ```bash
-secure.remote.access.agent {start|stop} <local_port> <username>@<remote_server> [options]
+tcp.port.tunneler {start|stop} <local_port> <username>@<remote_server> [options]
 ```
 
-* `<local_port>`: Local TCP port to expose.
-* `<username>@<remote_server>`: SSH credentials for the gateway server.
-* `[options]`: Optional flags (e.g., `-bg` to run in background).
+* `<local_port>` – Local TCP port you want to tunnel.
+* `<username>@<remote_server>` – SSH credentials for the gateway server.
+* `[options]` – Optional flags (e.g., `-bg` to run in background).
 
 ---
 
-### Example - Start Remote Access
+### Example - Start Tunnel
 
 ```bash
-secure.remote.access.agent start 2022 gw_user@test.domain.com
+tcp.port.tunneler start 8080 user@gateway.example.com
 ```
 
-### Access Your Local Machine
+After the tunnel starts, the utility will display the **public address and port** where your local service can be accessed.
 
-* After starting the agent, you can access your local machine with:
+Example output:
 
-```bash
-ssh local_user@test.domain.com -p 2022
+```
+####################################################################
+ Local Port : 8080
+ Public Host: gateway.example.com
+ Public Port: 10001
+####################################################################
 ```
 
-### Example - Stop Remote Access
+Now anyone can reach your local service via:
 
-```bash
-secure.remote.access.agent stop 2022 
+```
+http://gateway.example.com:10001
 ```
 
 ---
 
-## Prerequisite 
+### Example - Stop Tunnel
 
-* Ensure `sshpass` is installed on your local machine:
+```bash
+tcp.port.tunneler stop 8080
+```
+
+This stops the reverse SSH tunnel for the given local port.
+
+---
+
+## Prerequisites
+
+Ensure `sshpass` is installed on your local machine:
 
 **Ubuntu / Debian:**
 
@@ -103,26 +128,40 @@ sudo apt-get install sshpass
 brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
 ```
 
-# On the Public Gateway Machine
+---
 
-* Copy the SSH port forwarding setup script to the gateway server:
+### On the Public Gateway Machine
+
+1. Copy the SSH port forwarding setup script to the gateway server:
 
 ```bash
 scp -r server_setup/ <username>@<gateway_server>:/path/to/destination
 ```
 
-* On the gateway server, enable SSH port forwarding, if not already enabled:
+2. On the gateway server, enable SSH port forwarding (if not already enabled):
 
 ```bash
-cd /path/to/destination/server_setup
+git clone <repo-url>
+cd linux.tcp.port.tunneler
+cd server.setup.script
 ./enable.ssh.port.forwarding
 ```
 
-# Caution 
+This updates `/etc/ssh/sshd_config` to allow reverse tunnels.
 
-* The **remote server port** (in our example, port 2022) used for reverse tunneling must be **free**. If the port is already in use by another process, the tunnel will **fail**.
-* Anyone who can access the **public server’s forwarded port** (in our example, port 2022) will be able to reach your local machine, so only expose the port number you intend to share.
-* Always **stop the agent** after use to prevent unwanted exposure:
+---
+
+## Caution
+
+* The **remote port** assigned for reverse tunneling must be **free** on the gateway server.
+  If the port is already in use, the tunnel will **fail** to start.
+* Anyone who can access the **gateway’s forwarded port** can reach your local service.
+  Expose only the ports you intend to share.
+* Always **stop the tunnel** after use to prevent unwanted exposure:
+
+```bash
+tcp.port.tunneler stop <local_port>
+```
 
 ---
 
@@ -135,7 +174,7 @@ cd /path/to/destination/server_setup
 
 ## Uninstallation
 
-1. Make sure the uninstaller is executable:
+1. Make the uninstaller executable:
 
 ```bash
 chmod +x uninstaller.sh
@@ -149,13 +188,14 @@ chmod +x uninstaller.sh
 
 The uninstaller will:
 
-* Remove each installed utility from the proper binary directory (`/usr/local/bin` or `/usr/bin`).
+* Remove the installed binary from your system (e.g., `/usr/local/bin` or `/usr/bin`).
+* Clean up related configuration files if any.
 
 ---
 
 ## License
 
-MIT License
+This project is licensed under the MIT License.
 
 ---
 

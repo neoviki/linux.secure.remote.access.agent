@@ -1,0 +1,47 @@
+#!/bin/bash
+# tcp.port.tunneler
+
+
+# Usage:
+#   ./tcp.port.tunneler start <args_for_expose_port>
+#   ./tcp.port.tunneler stop <args_for_unexpose_port>
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 {start|stop} [args...]"
+    exit 1
+fi
+
+# extract command and shift to pass the rest of the args
+COMMAND=$1
+shift
+
+# Function to find script path
+find_script() {
+    local script_name="$1"
+    if [ -x "/usr/local/bin/$script_name" ]; then
+        echo "/usr/local/bin/$script_name"
+    elif [ -x "/usr/bin/$script_name" ]; then
+        echo "/usr/bin/$script_name"
+    elif [ -x "./$script_name" ]; then
+        echo "./$script_name"
+    else
+        echo "Error: $script_name not found in /usr/local/bin, /usr/bin, or current directory." >&2
+        exit 1
+    fi
+}
+
+case "$COMMAND" in
+    start)
+        SCRIPT_PATH=$(find_script "tcp.port.expose")
+        "$SCRIPT_PATH" "$@"
+        ;;
+    stop)
+        SCRIPT_PATH=$(find_script "tcp.port.unexpose")
+        "$SCRIPT_PATH" "$@"
+        ;;
+    *)
+        echo "Unknown command: $COMMAND"
+        echo "Usage: $0 {start|stop} [args...]"
+        exit 1
+        ;;
+esac

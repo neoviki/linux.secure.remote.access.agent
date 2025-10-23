@@ -20,9 +20,9 @@ LOCAL_PORT=""
 
 
 echo
-echo "  USAGE         : ./expose.port <local_port_to_expose> <username>@<public_server>:<remote_ssh_port>"
+echo "  USAGE         : ./tcp.port.expose <local_port_to_expose> <username>@<public_server>:<remote_ssh_port>"
 echo
-echo "  EXAMPLE       : ./expose.port 80 root@example.com:22"
+echo "  EXAMPLE       : ./tcp.port.expose 80 root@example.com:22"
 echo
 
 
@@ -49,8 +49,8 @@ fi
 
 
 #Single Line Usage:
-#./expose_port <local_port_to_expose> <username>@<remote_ip> <remote_ssh_port>
-#./expose_port 80 testuser@2.3.4.5 
+#./tcp.port.expose <local_port_to_expose> <username>@<remote_ip> <remote_ssh_port>
+#./tcp.port.expose 80 testuser@2.3.4.5 
 
 # Prerequisite check
 
@@ -178,7 +178,7 @@ echo
 INCOMING_PORT=10000
 PORT_CHECK_LIMIT=10006
 
-ERROR_LOG="/tmp/expose_port_error.log"
+ERROR_LOG="/tmp/tcp.port.expose.error.log"
 
 while [ $INCOMING_PORT -lt $PORT_CHECK_LIMIT ]
 do
@@ -261,7 +261,7 @@ signal_handler () {
     echo                
     echo " stopping service running on port -> $INCOMING_PORT"    
     ps -ef | grep "ssh" | grep 'localhost' | grep "$INCOMING_PORT" | grep -v "grep" | awk '{print $2}' | xargs -I{} kill -9 {}   
-    echo " Exitting expose_port"    
+    echo " Exitting tcp.port.expose"    
     exit                     
 }
 
