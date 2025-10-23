@@ -183,12 +183,6 @@ The uninstaller will:
 
 ---
 
-## License
-
-This project is licensed under the MIT License.
-
----
-
 ## Note on Project and Application Naming Convention
 
 I use **dot-separated names** for projects and applications (e.g., `linux.remote.access.agent`) to make each project’s purpose immediately clear. With over 40 projects - many of which I use regularly - this naming system helps me **quickly use applications without forgetting their names**, and **easily track, remember, and understand what each project does** without even opening it.
