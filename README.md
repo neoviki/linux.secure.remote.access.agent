@@ -143,8 +143,8 @@ This updates `/etc/ssh/sshd_config` to allow reverse tunnels.
 
 ## Caution
 
-* The **remote port** assigned for reverse tunneling must be **free** on the gateway server.
-  If the port is already in use, the tunnel will **fail** to start.
+* The script automatically checks remote ports 10000–10006 on the gateway server and uses the first available one for reverse tunneling.
+  If all ports in this range are already in use, the tunnel will fail to start.
 * Anyone who can access the **gateway’s forwarded port** can reach your local service.
   Expose only the ports you intend to share.
 * Always **stop the tunnel** after use to prevent unwanted exposure:

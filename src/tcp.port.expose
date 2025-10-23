@@ -175,6 +175,7 @@ echo
 echo 
 
 #Users in the internet can use this port along with $REMOTE_IP to communicate with THIS machine
+# TODO: Make configurable (via Config File) 
 INCOMING_PORT=10000
 PORT_CHECK_LIMIT=10006
 
