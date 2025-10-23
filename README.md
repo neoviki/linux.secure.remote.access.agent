@@ -27,16 +27,6 @@ This illustrates the main function of this agent: **Local Machine (A)** becomes 
 
 ---
 
-## Features
-
-* Start or stop TCP tunneling on-demand.
-* Uses SSH reverse tunneling under the hood.
-* Expose any local TCP port securely.
-* Simple CLI interface — ideal for automation or integration.
-* Works with any gateway server that has a public IP.
-
----
-
 ## Installation
 
 1. Clone the repository:
